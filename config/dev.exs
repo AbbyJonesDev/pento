@@ -72,3 +72,6 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# Import local dev secrets
+import_config "dev.secret.exs"

@@ -11,6 +11,22 @@ defmodule Pento.Accounts do
   ## Database getters
 
   @doc """
+  For the OAuth case, there is no previous registration step. The user may, or may not exist in the database at the time of sign-in.
+  https://iacobson.medium.com/phx-gen-auth-and-oauth-for-a-phoenix-liveview-app-a19a27e6befa
+  """
+  def fetch_or_create_user(attrs) do
+    case get_user_by_email(attrs.email) do
+      %User{} = user ->
+        {:ok, user}
+
+      _ ->
+        %User{}
+        |> User.registration_changeset(attrs)
+        |> Repo.insert()
+    end
+  end
+
+  @doc """
   Gets a user by email.
 
   ## Examples

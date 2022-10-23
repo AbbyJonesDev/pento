@@ -70,6 +70,9 @@ defmodule PentoWeb.Router do
     post "/users/reset_password", UserResetPasswordController, :create
     get "/users/reset_password/:token", UserResetPasswordController, :edit
     put "/users/reset_password/:token", UserResetPasswordController, :update
+
+    get "/auth/:provider", UserOauthController, :request
+    get "/auth/:provider/callback", UserOauthController, :callback
   end
 
   scope "/", PentoWeb do
