@@ -50,7 +50,8 @@ config :phoenix, :json_library, Jason
 # Configure Ueberauth for OAuth
 config :ueberauth, Ueberauth,
   providers: [
-    google: {Ueberauth.Strategy.Google, []}
+    google: {Ueberauth.Strategy.Google, []},
+    okta: {Ueberauth.Strategy.Okta, []}
   ]
 
 # Import environment specific config. This must remain at the bottom
