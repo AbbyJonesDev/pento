@@ -20,7 +20,9 @@ defmodule PentoWeb.UserOauthController do
     end
   end
 
-  def callback(%{assigns: %{ueberauth_auth: %{info: user_info, extra: extra_info}}} = conn, %{"provider" => "okta"}) do
+  def callback(%{assigns: %{ueberauth_auth: %{info: user_info, extra: extra_info}}} = conn, %{
+        "provider" => "okta"
+      }) do
     Logger.debug("User info: #{inspect(user_info)}")
     Logger.debug("Extra info: #{inspect(extra_info)}")
 
@@ -38,7 +40,7 @@ defmodule PentoWeb.UserOauthController do
   end
 
   def callback(conn, _params) do
-    Logger.debug(inspect conn.assigns)
+    Logger.debug(inspect(conn.assigns))
 
     conn
     |> put_flash(:error, "Authentication failed")

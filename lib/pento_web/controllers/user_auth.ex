@@ -75,6 +75,7 @@ defmodule PentoWeb.UserAuth do
     user_token && Accounts.delete_session_token(user_token)
 
     if live_socket_id = get_session(conn, :live_socket_id) do
+      IO.puts("LIVE SOCKET ID: #{live_socket_id}")
       PentoWeb.Endpoint.broadcast(live_socket_id, "disconnect", %{})
     end
 
