@@ -237,8 +237,8 @@ defmodule Pento.Accounts do
   Generates a session token.
   """
   def generate_user_session_token(user) do
-    {token, user_token} = UserToken.build_session_token(user)
-    Repo.insert!(user_token)
+    {token, _user_token} = UserToken.build_session_token(user)
+    # Repo.insert!(user_token)
     token
   end
 

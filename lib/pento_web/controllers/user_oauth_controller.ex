@@ -20,25 +20,31 @@ defmodule PentoWeb.UserOauthController do
     end
   end
 
-  def callback(%{assigns: %{ueberauth_auth: %{info: user_info, extra: extra_info}}} = conn, %{"provider" => "okta"}) do
-    Logger.debug("User info: #{inspect(user_info)}")
-    Logger.debug("Extra info: #{inspect(extra_info)}")
+  def callback(%{assigns: %{ueberauth_auth: %{info: user_info, extra: extra_info}}} = conn, %{
+        "provider" => "okta"
+      }) do
+    # Logger.debug("User info: #{inspect(user_info)}")
+    # Logger.debug("Extra info: #{inspect(extra_info)}")
 
-    user_params = %{email: user_info.email, password: random_password()}
+    user = %{email: user_info.email}
 
-    case Accounts.fetch_or_create_user(user_params) do
-      {:ok, user} ->
-        UserAuth.log_in_user(conn, user)
+    UserAuth.log_in_user(conn, user)
 
-      _ ->
-        conn
-        |> put_flash(:error, "Authentication failed")
-        |> redirect(to: "/")
-    end
+    # user_params = %{email: user_info.email, password: random_password()}
+
+    # case Accounts.fetch_or_create_user(user_params) do
+    #   {:ok, user} ->
+    #     UserAuth.log_in_user(conn, user)
+
+    #   _ ->
+    #     conn
+    #     |> put_flash(:error, "Authentication failed")
+    #     |> redirect(to: "/")
+    # end
   end
 
   def callback(conn, _params) do
-    Logger.debug(inspect conn.assigns)
+    Logger.debug(inspect(conn.assigns))
 
     conn
     |> put_flash(:error, "Authentication failed")

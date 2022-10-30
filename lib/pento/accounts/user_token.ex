@@ -17,9 +17,10 @@ defmodule Pento.Accounts.UserToken do
     field :token, :binary
     field :context, :string
     field :sent_to, :string
-    belongs_to :user, Pento.Accounts.User
+    field :email, :string
+    # belongs_to :user, Pento.Accounts.User
 
-    timestamps(updated_at: false)
+    # timestamps(updated_at: false)
   end
 
   @doc """
@@ -43,7 +44,7 @@ defmodule Pento.Accounts.UserToken do
   """
   def build_session_token(user) do
     token = :crypto.strong_rand_bytes(@rand_size)
-    {token, %UserToken{token: token, context: "session", user_id: user.id}}
+    {token, %UserToken{token: token, context: "session", email: user.email}}
   end
 
   @doc """
@@ -90,7 +91,7 @@ defmodule Pento.Accounts.UserToken do
        token: hashed_token,
        context: context,
        sent_to: sent_to,
-       user_id: user.id
+       email: user.email
      }}
   end
 

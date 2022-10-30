@@ -1,4 +1,5 @@
 defmodule PentoWeb.UserAuth do
+  require Logger
   import Plug.Conn
   import Phoenix.Controller
 
@@ -71,8 +72,8 @@ defmodule PentoWeb.UserAuth do
   It clears all session data for safety. See renew_session.
   """
   def log_out_user(conn) do
-    user_token = get_session(conn, :user_token)
-    user_token && Accounts.delete_session_token(user_token)
+    # user_token = get_session(conn, :user_token)
+    # user_token && Accounts.delete_session_token(user_token)
 
     if live_socket_id = get_session(conn, :live_socket_id) do
       PentoWeb.Endpoint.broadcast(live_socket_id, "disconnect", %{})
@@ -90,7 +91,8 @@ defmodule PentoWeb.UserAuth do
   """
   def fetch_current_user(conn, _opts) do
     {user_token, conn} = ensure_user_token(conn)
-    user = user_token && Accounts.get_user_by_session_token(user_token)
+    # user = user_token && Accounts.get_user_by_session_token(user_token)
+    user = user_token && %{email: "change this later"}
     assign(conn, :current_user, user)
   end
 
@@ -112,7 +114,7 @@ defmodule PentoWeb.UserAuth do
   Used for routes that require the user to not be authenticated.
   """
   def redirect_if_user_is_authenticated(conn, _opts) do
-    if conn.assigns[:current_user] do
+    if conn.assigns[:current_user][:email] do
       conn
       |> redirect(to: signed_in_path(conn))
       |> halt()
@@ -128,7 +130,7 @@ defmodule PentoWeb.UserAuth do
   they use the application at all, here would be a good place.
   """
   def require_authenticated_user(conn, _opts) do
-    if conn.assigns[:current_user] do
+    if conn.assigns[:current_user][:email] do
       conn
     else
       conn
