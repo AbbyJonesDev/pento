@@ -7,9 +7,6 @@
 # General application configuration
 import Config
 
-config :pento,
-  ecto_repos: [Pento.Repo]
-
 # Configures the endpoint
 config :pento, PentoWeb.Endpoint,
   url: [host: "localhost"],

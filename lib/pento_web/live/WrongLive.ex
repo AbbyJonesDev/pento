@@ -34,7 +34,7 @@ defmodule PentoWeb.WrongLive do
     """
   end
 
-  def handle_event("guess", %{"number" => guess} = data, socket) do
+  def handle_event("guess", %{"number" => guess} = _data, socket) do
     success = guess == to_string(socket.assigns.correct_answer)
 
     messages = %{

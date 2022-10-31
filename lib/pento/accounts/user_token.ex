@@ -1,26 +1,19 @@
 defmodule Pento.Accounts.UserToken do
   use Ecto.Schema
-  import Ecto.Query
   alias Pento.Accounts.UserToken
 
-  @hash_algorithm :sha256
   @rand_size 32
 
   # It is very important to keep the reset password token expiry short,
   # since someone with access to the email may take over the account.
-  @reset_password_validity_in_days 1
-  @confirm_validity_in_days 7
-  @change_email_validity_in_days 7
-  @session_validity_in_days 60
+  # @session_validity_in_days 60
 
   schema "users_tokens" do
     field :token, :binary
     field :context, :string
     field :sent_to, :string
     field :email, :string
-    # belongs_to :user, Pento.Accounts.User
-
-    # timestamps(updated_at: false)
+    field :created_at, :naive_datetime
   end
 
   @doc """
@@ -47,39 +40,22 @@ defmodule Pento.Accounts.UserToken do
     {token, %UserToken{token: token, context: "session", email: user.email}}
   end
 
-  @doc """
-  Checks if the token is valid and returns its underlying lookup query.
+  # @doc """
+  # Checks if the token is valid and returns its underlying lookup query.
 
-  The query returns the user found by the token, if any.
+  # The query returns the user found by the token, if any.
 
-  The token is valid if it matches the value in the database and it has
-  not expired (after @session_validity_in_days).
-  """
-  def verify_session_token_query(token) do
-    query =
-      from token in token_and_context_query(token, "session"),
-        join: user in assoc(token, :user),
-        where: token.inserted_at > ago(@session_validity_in_days, "day"),
-        select: user
+  # The token is valid if it matches the value in the database and it has
+  # not expired (after @session_validity_in_days).
+  # """
+  # def verify_session_token_query(token) do
+  #   # query =
+  #   #   from token in token_and_context_query(token, "session"),
+  #   #     join: user in assoc(token, :user),
+  #   #     where: token.inserted_at > ago(@session_validity_in_days, "day"),
+  #   #     select: user
 
-    {:ok, query}
-  end
-
-  @doc """
-  Returns the token struct for the given token value and context.
-  """
-  def token_and_context_query(token, context) do
-    from UserToken, where: [token: ^token, context: ^context]
-  end
-
-  @doc """
-  Gets all tokens for the given user for the given contexts.
-  """
-  def user_and_contexts_query(user, :all) do
-    from t in UserToken, where: t.user_id == ^user.id
-  end
-
-  def user_and_contexts_query(user, [_ | _] = contexts) do
-    from t in UserToken, where: t.user_id == ^user.id and t.context in ^contexts
-  end
+  #   # TODO - implement?
+  #   {:ok, token}
+  # end
 end
