@@ -2,10 +2,12 @@ defmodule Pento.Repo.Migrations.CreateUsersAuthTables do
   use Ecto.Migration
 
   def change do
-    execute "CREATE EXTENSION IF NOT EXISTS citext", ""
+    # TODO - Dynamo doesn't have a case-insensitive field type, so
+    # need to make sure email address is always downcased before insertion
+    # execute "CREATE EXTENSION IF NOT EXISTS citext", ""
 
     create table(:users) do
-      add :email, :citext, null: false
+      add :email, null: false
       add :hashed_password, :string, null: false
       add :confirmed_at, :naive_datetime
       timestamps()

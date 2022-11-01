@@ -2,12 +2,18 @@ import Config
 
 # Configure your database
 config :pento, Pento.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  database: "pento_dev",
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  dynamodb_local: true,
+  # ExAws configuration
+  access_key_id: "abcd",
+  secret_access_key: "1234",
+  region: "us-east-1",
+  debug_requests: true,	# ExAws option to enable debug on aws http request.
+  dynamodb: [
+    scheme: "http://",
+    host: "localhost",
+    port: 8000,
+    region: "us-east-1"
+  ]
 
 # For development, we disable any cache and enable
 # debugging and code reloading.

@@ -14,6 +14,12 @@ config :pento, PentoWeb.Endpoint, cache_static_manifest: "priv/static/cache_mani
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :pento, Pento.Repo,
+  # ExAws configuration - will check for env variables first and then for a role
+  access_key_id: [{:system, "AWS_ACCESS_KEY_ID"}, :instance_role],
+  secret_access_key: [{:system, "AWS_SECRET_ACCESS_KEY"}, :instance_role],
+  region: "us-east-1"
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key

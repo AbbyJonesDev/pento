@@ -10,6 +10,9 @@ import Config
 config :pento,
   ecto_repos: [Pento.Repo]
 
+config :pento, Pento.Repo,
+  scan_tables: ["schema_migrations"]
+
 # Configures the endpoint
 config :pento, PentoWeb.Endpoint,
   url: [host: "localhost"],
